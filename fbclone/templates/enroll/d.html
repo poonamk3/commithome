@@ -235,3 +235,35 @@ $('.comment-btn').click(function(event){
                     }
                 })
             })
+
+def add_comment(request):
+    comment=request.POST.get('comment')
+    postSno =request.POST.get('postSno')
+    post_obj= Post.objects.get(id=postSno)
+    if request.method == "POST":    
+        user=request.user
+        cm=Comment(post=post_obj,user=user,body=comment)
+        cm.save()
+        data = Comment.objects.values().order_by('-created')
+        commdata=data[len(data)-1]
+        return JsonResponse({'cm':commdata,'status':'save'},safe=False)
+    else:
+        return redirect("/")
+    return redirect("/")
+
+
+   
+if request.method == "POST": 
+        comment=request.POST.get('comment')
+        postSno =request.POST.get('postSno')
+        post_obj= Post.objects.get(id=postSno)   
+        user=request.user
+        cm=Comment(post=post_obj,user=user,body=comment)
+        cm.save()
+        data = Comment.objects.values()
+        commdata=data[len(data)-1]
+        return JsonResponse({'cm':commdata,'status':'save'},safe=False)
+    else:
+        return redirect("/")
+    return redirect("/")
+

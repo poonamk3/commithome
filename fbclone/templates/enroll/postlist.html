@@ -77,7 +77,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{% url 'comment'%}" method="POST" class="comment-from" id="{{i.id}}">
+        <form action="{% url 'mment'%}" method="POST" class="comment-from" id="{{i.id}}">
                 {% csrf_token %}
                 <input type="hidden" name="postSno" value="{{i.id}}" id="name"><br>
                 Content: <br/>
@@ -97,8 +97,8 @@
         {% if not i.comments.all %}
             <p> No Comments</p>
         {% else %}
-            {% for comment in i.comments.all%}
-            <div id="comment">
+            {% for comment in i.comments.all %}
+            <div id="maincomm">
                 <span><strong>User:-{{comment.user}}</strong></span>
                 <p id="cb">{{comment.body}}</p>
                 <span><strong>Created time :-{{comment.created}}</strong></span>
@@ -183,24 +183,23 @@
             console.log(constbody)
             $.ajax({
                 method: 'POST',
-                url:'{% url 'comment' %}', 
+                url:'{% url 'mment' %}', 
                 data: {
                     'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
                     'post_id':post_id,
                     'post':constname,
                     'body':constbody,
-
                 },
                 success: function (response) {
-                  
-                    $('#main').append('<p>'+response.cm.body+'</p>');
+                    $('#maincomm').append('<p>'+response.cm.body+'</p>');
                 },
                 error : function(response){
                     console.log('poonam',response)
                 }
             
+            })
         });// End Onclick   
-}); // End Documents       
+    }); // End Documents       
 </script>
 <script></script>
 </body>

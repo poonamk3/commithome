@@ -115,29 +115,30 @@ def like_post(request):
             else :
                 like.value = 'Like'
         like.save()
-        
         data = {
             'value': like.value,
             'likes': post_obj.likes.all().count(),
-            'post_user':",".join(str(i) for i in post_if),
+            # 'post_user':",".join(str(i) for i in post_if),
         }
-    return JsonResponse(data, safe=False)
+        return JsonResponse(data, safe=False)
+    return redirect("/")
 
 
 def add_comment(request):
-    comment=request.POST.get('comment')
-    postSno =request.POST.get('postSno')
-    post_obj= Post.objects.get(id=postSno)
-    data = list(Comment.objects.values())
-    comdata=data[len(data)]
-    if request.method == "POST":    
-        user=request.user
-        cm=Comment(post=post_obj,user=user,body=comment)
-        cm.save()
-        return JsonResponse({'cm':data,'status':'save'},safe=False)
+    if request.method == "POST": 
+            comment=request.POST.get('comment')
+            postSno =request.POST.get('postSno')
+            post_obj= Post.objects.get(id=postSno)   
+            user=request.user
+            cm=Comment(post=post_obj,user=user,body=comment)
+            cm.save()
+            data = Comment.objects.values()
+            commdata=data[len(data)-1]
+            return JsonResponse({'cm':commdata,'status':'save'},safe=False)
     else:
-        return JsonResponse({'status':'0'})
-    # return redirect("/")
+        return redirect("/")
+    return redirect("/")
+
 
 
    
